@@ -239,6 +239,24 @@ bpy.context.scene.render.filepath = preview_path
 bpy.ops.render.render(write_still=True)
 print(f"🖼️  Preview: {preview_path}")
 
+# Mover el render a imagenes/ con timestamp para historial
+import shutil, os
+from datetime import datetime
+repo_dir = os.path.dirname(OUTPUT)
+imgs_dir = os.path.join(repo_dir, "imagenes")
+os.makedirs(imgs_dir, exist_ok=True)
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+destino = os.path.join(imgs_dir, f"render_{timestamp}.png")
+shutil.move(preview_path, destino)
+print(f"📁 Movido a: {destino}")
+
+# Actualizar symlink render_ultimo.png
+link_path = os.path.join(imgs_dir, "render_ultimo.png")
+if os.path.islink(link_path) or os.path.exists(link_path):
+    os.remove(link_path)
+os.symlink(os.path.basename(destino), link_path)
+print(f"🔗 Symlink: render_ultimo.png -> {os.path.basename(destino)}")
+
 # Contar objetos
 n = len([o for o in bpy.data.objects if o.name in [obj.name for obj in collection.objects]])
 print(f"📦 Objetos en colección Edificio: {n}")
