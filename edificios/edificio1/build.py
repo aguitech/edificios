@@ -14,7 +14,7 @@ from datetime import datetime
 from mathutils import Vector
 
 # ============== CONFIG ==============
-OUTPUT = "/Users/hectoraguilar/Projects/edificio/edificio.blend"
+OUTPUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "edificio1.blend")
 REPO_DIR = os.path.dirname(OUTPUT)
 IMGS_DIR = os.path.join(REPO_DIR, "imagenes")
 os.makedirs(IMGS_DIR, exist_ok=True)
